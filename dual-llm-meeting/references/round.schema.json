@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dual-LLM Meeting Round Output",
+  "type": "object",
+  "required": [
+    "assumptions",
+    "proposal",
+    "patch_plan",
+    "tests",
+    "tradeoffs",
+    "risks",
+    "conflicts",
+    "open_questions"
+  ],
+  "properties": {
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "proposal": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "patch_plan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "change", "steps"],
+        "properties": {
+          "file": { "type": "string" },
+          "change": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tradeoffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["option", "pros", "cons", "decision"],
+        "properties": {
+          "option": { "type": "string" },
+          "pros": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "cons": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "decision": { "type": "string", "enum": ["pick", "avoid"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk", "impact", "mitigation"],
+        "properties": {
+          "risk": { "type": "string" },
+          "impact": { "type": "string", "enum": ["low", "med", "high"] },
+          "mitigation": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["topic", "options", "recommendation", "reason"],
+        "properties": {
+          "topic": { "type": "string" },
+          "options": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2
+          },
+          "recommendation": { "type": "string" },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}
