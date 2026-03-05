@@ -108,7 +108,8 @@ python3 dual-llm-meeting/scripts/init_meeting.py --root . --workspace payment-re
     │   ├── prompt-contract.md
     │   └── round.schema.json
     └── scripts/
-        └── init_meeting.py
+        ├── init_meeting.py
+        └── offline_git_sync.sh
 ```
 
 ---
@@ -120,6 +121,38 @@ python3 dual-llm-meeting/scripts/init_meeting.py --root . --workspace payment-re
 - 使用 `references/prompt-contract.md` 组装轮次 prompt
 - 用 `references/round.schema.json` 校验输出
 - 用 `scripts/init_meeting.py` 在项目目录创建 scoped workspace
+
+---
+
+
+## 无网络环境处理（Offline）
+
+如果当前执行环境无法访问 GitHub（例如 `Network is unreachable` / `CONNECT tunnel failed`），可使用离线交付方式：
+
+### 方案 A：git bundle（推荐）
+
+在当前离线环境执行：
+
+```bash
+bash dual-llm-meeting/scripts/offline_git_sync.sh bundle --output /tmp/dual-llm-meeting.bundle --branch work
+```
+
+把 `.bundle` 文件拷贝到可联网机器后执行：
+
+```bash
+git clone /tmp/dual-llm-meeting.bundle repo-from-bundle
+cd repo-from-bundle
+git remote add origin git@github.com:iTradingAI/Antigravity-llm-meeting.git
+git push -u origin work
+```
+
+### 方案 B：format-patch
+
+```bash
+bash dual-llm-meeting/scripts/offline_git_sync.sh patch --output-dir /tmp/patches --head work
+```
+
+将 patch 文件传到可联网机器后用 `git am` 应用并推送。
 
 ---
 
